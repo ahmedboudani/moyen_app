@@ -5,3 +5,5 @@ arabic_reshaper
 python-bidi
 waitress
 psycopg2-binary
+pandas
+openpyxl

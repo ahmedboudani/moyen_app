@@ -1,0 +1,18 @@
+<h3>📄 اختر الورقة التي تريد تصدير النتائج إليها</h3>
+
+<form action="{{ url_for('export_to_selected_sheet') }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="excel_file" value="{{ request.files['excel_file'] }}">
+    <div>
+        <label>اختر الورقة:</label>
+        <select name="sheet_name" required>
+            {% for sheet in sheet_names %}
+            <option value="{{ sheet }}">{{ sheet }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label>📁 أعد تحميل نفس ملف Excel:</label>
+        <input type="file" name="excel_file" accept=".xlsx" required>
+    </div>
+    <button type="submit" class="btn btn-success">💾 تصدير البيانات</button>
+</form>

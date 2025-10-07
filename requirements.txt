@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+reportlab
+arabic_reshaper
+python-bidi
+waitress
+psycopg2-binary

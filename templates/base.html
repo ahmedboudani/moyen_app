@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}نظام إدارة التلاميذ{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <center>
+ <nav>
+    <a class="link" href="{{ url_for('index') }}">🏠 الرئيسية</a> 
+    <a class="link" href="{{ url_for('classes') }}">📂 الأقسام</a> 
+    <a class="link" href="{{ url_for('students') }}">👨‍🎓 التلاميذ</a> 
+    <a class="link" href="{{ url_for('results') }}">📑 عرض النتائج</a>
+  </nav>
+  </center>
+ 
+  <hr>
+
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>
+    <p>جميع الحقوق محفوظة © {{ general_info.institution if general_info else '' }}</p>
+  </footer>
+</body>
+<style>
+  nav{
+    background-color:  #d8d8e2;
+    box-shadow: 0px 4px 12px ;
+    border-radius: 10px;
+    width: 98%;
+  }
+</style>
+</html>
+

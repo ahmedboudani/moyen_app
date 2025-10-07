@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}البيانات العامة{% endblock %}
+{% block content %}
+<div class="container">
+<div><h1>إدارة معدلات التلاميذ</h1></div>
+
+  <h3>⚙️ البيانات العامة</h3>
+  <center>
+<form class="info-form" method="post">
+    <div class="form-group">
+      <label>المؤسسة:</label>
+      <input type="text" name="institution" value="{{ info.institution if info else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label>مديرية التربية لولاية:</label>
+      <input type="text" name="directorate" value="{{ info.directorate if info else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label>الأستاذ(ة):</label>
+      <input type="text" name="teacher" value="{{ info.teacher if info else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label>المادة:</label>
+      <select name="subject">
+        <option value="">-- اختر المادة --</option>
+        {% for subject in subjects %}
+            <option value="{{ subject }}" {% if info and info.subject == subject %}selected{% endif %}>{{ subject }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn-save"> 💾  حفظ</button>
+      <a href="{{ url_for('delete_info') }}" class="btn-delete" onclick="return confirm('هل تريد حذف جميع البيانات؟')">🗑 حذف البيانات</a>
+    </div>
+  </form>
+  </center>
+  
+</div>
+
+<style>
+  .container {
+  width: 98%;
+  background-color:#d8d8e2;
+  padding:10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px ;
+  text-align: center;
+  margin: auto;
+  margin-top: 0px;
+}
+.info-form{
+  width: 50%;
+}
+</style>
+{% endblock %}

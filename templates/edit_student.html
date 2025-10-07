@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}تعديل التلميذ{% endblock %}
+{% block content %}
+<div class="container">
+<h2>✏️ تعديل بيانات التلميذ</h2>
+<div class="general1">
+  <p>📌 مديرية التربية لولاية: {{ general_info.directorate if general_info else '' }}</p>
+  <p>🏫 المؤسسة: {{ general_info.institution if general_info else '' }}</p>
+</div>
+<div class="general2">
+  <p>👨‍🏫 الأستاذ: {{ general_info.teacher if general_info else '' }}</p>
+  <p>📚 المادة: {{ general_info.subject if general_info else '' }}</p>
+</div>
+<center>
+ <form method="post">
+    <label for="ferstname">إسم التلميذ:</label>
+    
+    <input type="text" name="fullname" value="{{ student.fullname }}" required>
+    
+
+
+    <label for="semester">الفصل:</label>
+    <select name="semester" required>
+        {% for semester in semesters %}
+            <option value="{{ semester }}" {% if student.semester == semester %}selected{% endif %}>{{ semester }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="class_id">القسم:</label>
+    <select name="class_id" required>
+        {% for cls in classes %}
+            <option value="{{ cls.id }}" {% if student.class_id == cls.id %}selected{% endif %}>
+                {{ cls.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">تحديث</button>
+</form>
+
+</center>
+</div>
+{% endblock %}

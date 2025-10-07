@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}إدارة الأقسام{% endblock %}
+{% block content %}
+<div class="container">
+   <h2 style="text-align:center;">إدارة الأقسام</h2>
+    <div class="general1">
+  <p>📌 مديرية التربية لولاية: {{ general_info.directorate if general_info else '' }}</p>
+  <p>🏫 المؤسسة: {{ general_info.institution if general_info else '' }}</p>
+  </div>
+  <div class="general2">
+  <p>👨‍🏫 الأستاذ: {{ general_info.teacher if general_info else '' }}</p>
+  <p>📚 المادة: {{ general_info.subject if general_info else '' }}</p>
+</div>
+ 
+
+  <form method="POST" style="text-align:center; margin-bottom:20px;">
+    <input style="width:40%;" type="text" name="name" placeholder="اسم القسم" required>
+    <button class="btn_add" type="submit">➕ إضافة قسم</button>
+  </form>
+<center>
+ <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>القسم</th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody >
+        {% for c in classes %}
+        <tr>
+          <td >{{ c.name }}</td>
+          <td >
+            <form method="POST" action="{{ url_for('edit_class', id=c.id) }}" style="display:inline;">
+              <input style="width:50%;" type="text" name="name" value="{{ c.name }}">
+              <button class="btn_edit" type="submit">✏️ تعديل</button>
+            </form>
+            <a href="{{ url_for('delete_class', id=c.id) }}" onclick="return confirm('هل أنت متأكد من حذف هذا القسم؟')">🗑 حذف</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</center>
+ 
+</div>
+<style>
+.container {
+  width: 98%;
+  background-color:#d8d8e2;
+  padding:10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px ;
+  text-align: center;
+  margin: auto;
+  margin-top: 0px;
+}
+.table-container{
+  width: 70%;
+  display: flex;
+  justify-content: center;  /* يوسط الجدول أفقيًا */
+  align-items: center;      /* يوسط الجدول عموديًا (إذا فيه ارتفاع كافي) */
+  margin-top: 10px;
+}
+.class_tbl{
+  display: flex;
+  justify-content: center;
+}
+</style>
+{% endblock %}

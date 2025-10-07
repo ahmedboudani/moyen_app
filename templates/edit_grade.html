@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}تعديل العلامة{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>✏️ تعديل علامة التلميذ: {{ student.fullname }}</h2>
+  <div class="general1">
+    <p>📌 مديرية التربية لولاية: {{ general_info.directorate if general_info else '' }}</p>
+    <p>🏫 المؤسسة: {{ general_info.institution if general_info else '' }}</p>
+  </div>
+  <div class="general2">
+    <p>👨‍🏫 الأستاذ: {{ general_info.teacher if general_info else '' }}</p>
+    <p>📚 المادة: {{ general_info.subject if general_info else '' }}</p>
+  </div>
+  <center>
+    <form method="post">
+      <label for="assessment">التقويم:</label>
+      <input type="number" step="0.01" name="assessment" value="{{ grade.assessment }}" required>
+
+      <label for="test">الفرض:</label>
+      <input type="number" step="0.01" name="test" value="{{ grade.test }}" required>
+
+      <label for="exam">الاختبار:</label>
+      <input type="number" step="0.01" name="exam" value="{{ grade.exam }}" required>
+
+      <button style="margin-bottom: 10px;font-weight: bold;" type="submit">تحديث</button>
+    </form>
+  </center>
+</div>
+<style>
+   .container {
+  width: 98%;
+  background-color:#d8d8e2;
+  padding:10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px ;
+  text-align: center;
+  margin: auto;
+  margin-top: 0px;
+}
+form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+ 
+}
+</style>
+{% endblock %}

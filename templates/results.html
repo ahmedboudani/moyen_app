@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}عرض النتائج{% endblock %}
+
+{% block content %}
+<div class="container" id="resultsContainer">
+    <h2 class="text-center">📊 عرض النتائج</h2>
+    <div class="general1">
+        <p>📌 مديرية التربية لولاية: {{ general_info.directorate if general_info else '' }}</p>
+        <p>🏫 المؤسسة: {{ general_info.institution if general_info else '' }}</p>
+    </div>
+    <div class="general2">
+        <p>👨‍🏫 الأستاذ: {{ general_info.teacher if general_info else '' }}</p>
+        <p>📚 المادة: {{ general_info.subject if general_info else '' }}</p>
+    </div>
+    <hr>
+    <center>
+       <form method="get" action="{{ url_for('results') }}" class="search-form">
+    <div class="search-container">
+        <div class="search-item">
+            <label>القسم:</label>
+            <select name="class_id">
+                <option value="">-- الكل --</option>
+                {% for c in classes %}
+                    <option value="{{ c.id }}" {% if selected_class == c.id %}selected{% endif %}>{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="search-item">
+            <label>الفصل:</label>
+            <select name="semester">
+                <option value="">-- الكل --</option>
+                {% for semester in semesters %}
+                    <option value="{{ semester }}" {% if selected_semester == semester %}selected{% endif %}>{{ semester }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="search-item">
+            <button class="btn" type="submit">بحث</button>
+        </div>
+    </div>
+</form>
+        {% if students %}
+        <div class="frm1" style="margin-top: 10px;">
+            <a style="margin-top:10px;"
+                href="{{ url_for('export_pdf_route', class_id=selected_class or '', semester=selected_semester or '') }}" 
+                class="btn">تصدير PDF</a>
+        </div>
+        <form id="exportForm" class="export-form">
+            <div class="form-group">
+                <label for="excelFile">📂 اختر ملف Excel:</label>
+                <input type="file" id="excelFile" accept=".xlsx" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sheetName">📄 اختر الصفحة:</label>
+                <select id="sheetName" required>
+                    <option value="1">الصفحة الأولى</option>
+                    <option value="2">الصفحة الثانية</option>
+                    <option value="3">الصفحة الثالثة</option>
+                    <option value="4">الصفحة الرابعة</option>
+                    <option value="5">الصفحة الخامسة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn export-excel-btn">📤 تصدير إلى Excel</button>
+            </div>
+        </form>
+        
+
+        <script>
+document.getElementById('exportForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('excelFile');
+    const sheetName = document.getElementById('sheetName').value;
+
+    if (!fileInput.files.length || !sheetName) {
+        alert('⚠️ الرجاء اختيار ملف Excel وتحديد الصفحة');
+        return;
+    }
+
+    // 🟢 جمع بيانات الجدول من الصفحة
+    const tableRows = document.querySelectorAll("table.tbl tr");
+    const students = [];
+    for (let i = 1; i < tableRows.length; i++) {
+        const cells = tableRows[i].querySelectorAll("td");
+        if (cells.length > 0) {
+            students.push({
+                fullname: cells[0]?.textContent.trim() || "",
+                assessment: cells[3]?.textContent || "",
+                test: cells[4]?.textContent || "",
+                avg_controle: cells[5]?.textContent || "",
+                exam: cells[6]?.textContent || "",
+                average: cells[7]?.textContent || "",
+                note: cells[8]?.textContent || ""
+            });
+        }
+    }
+
+    // 🔹 تجهيز FormData بعد جمع البيانات
+    const formData = new FormData();
+    formData.append('excel_file', fileInput.files[0]);
+    formData.append('sheet_name', sheetName);
+    formData.append('students_data', JSON.stringify(students));
+
+    try {
+        // استخدام fetch API لإرسال البيانات
+        const response = await fetch('/export_excel', {
+            method: 'POST',
+            body: formData
+        });
+
+        // التحقق من نوع الاستجابة
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+            // إذا كانت الاستجابة JSON، فهذا يعني أن هناك خطأ
+            const data = await response.json();
+            alert('❌ خطأ: ' + (data.error || 'فشل التصدير'));
+        } else {
+            // إذا لم تكن الاستجابة JSON، فهذا يعني أن الملف جاهز للتنزيل
+            // تحويل الاستجابة إلى blob
+            const blob = await response.blob();
+            
+            // إنشاء رابط تنزيل
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = fileInput.files[0].name;
+            document.body.appendChild(a);
+            a.click();
+            
+            // تنظيف
+            window.URL.revokeObjectURL(downloadUrl);
+            document.body.removeChild(a);
+            
+            alert('✅ تم تصدير البيانات بنجاح!');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('⚠️ حدث خطأ أثناء الاتصال بالخادم.');
+    }
+});
+
+
+</script>
+
+
+        {% endif %}
+    </center>
+
+    <hr>
+
+    {% if selected_class and selected_semester %}
+        <div style="text-align: center; font-weight: bold; font-size: large; margin-bottom: 10px;">
+            <span>
+                القسم: 
+                {% for c in classes %}
+                    {% if c.id == selected_class %}
+                        {{ c.name }}
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <span style="margin-right: 50px;"></span> 
+            <span>{{ selected_semester }}</span>
+        </div>
+    {% endif %}
+
+    <center>
+    <table class="tbl" border="1" width="100%" colwidths="[120,50,50,50,50,50,90]">
+        <tr>
+            <th>الاسم</th>
+            <th>القسم</th>
+            <th>الفصل</th>
+            <th>التقويم</th>
+            <th>الفرض</th>
+            <th>م التقويم</th>
+            <th>الاختبار</th>
+            <th>المعدل</th>
+            <th>الملاحظات</th>
+        </tr>
+
+        {% for s in students|sort(attribute='fullname') %}
+            {% if s.grades_for_semester %}
+                {% for g in s.grades_for_semester %}
+                <tr>
+                    <td>{{ s.fullname }}</td>
+                    <td>{{ s.class_rel.name }}</td>
+                    <td>{{ s.semester }}</td>
+                    <td>{{ g.assessment }}</td>
+                    <td>{{ g.test }}</td>
+                    <td>{{ g.avg_controle }}</td>
+                    <td>{{ g.exam }}</td>
+                    <td>{{ g.average }}</td>
+                    <td>{{ g.note }}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </table>
+    </center>
+
+    <hr>
+    <center>
+    <table class="statistics" border="0" width="25%">
+        <tr>
+            <th>عدد التلاميذ</th>
+            <th>معدل القسم</th>
+            <th>نسبة النجاح</th>
+        </tr>
+        <tr>
+            <td>{{ num_students }}</td>
+            <td>{{ "%.2f"|format(class_average) }}</td>
+            <td>{{ "%.2f"|format(success_percentage) }}%</td>
+        </tr>
+    </table>
+    </center>
+</div>
+
+<style>
+    .container {
+        width: 98%;
+        background-color:#d8d8e2;
+        padding:10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px ;
+        text-align: center;
+        margin: auto;
+    }
+    .frm{
+        display: flex;
+        justify-content: center;
+        width:35%;
+    }
+    .btn{
+        color:white;
+        background-color: rgb(34, 34, 39);
+        width:auto;
+        padding: 5px 15px;
+        border-radius: 10px;
+    }
+    .frm1{
+        display: flex; 
+        justify-content: center; 
+        margin: auto; 
+        gap: 10px;
+    }
+    .search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 10px auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-form select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-form .btn {
+    margin: 0;
+    padding: 5px 15px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.export-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    
+}
+
+.export-form .form-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.export-form .form-group label {
+    white-space: nowrap;
+}
+
+.export-excel-btn {
+    position: relative;
+    bottom: 8px;
+}
+
+</style>
+{% endblock %}

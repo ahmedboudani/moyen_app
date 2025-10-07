@@ -1,0 +1,410 @@
+body {
+  text-align: center; /* يخلي النص في الوسط */
+  font-family: "Cairo", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+nav {
+  background-color: rgb(184, 192, 190);
+  font-size: 22px;
+  padding: 10px;
+}
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+nav a:hover {
+  color: darkblue;
+}
+.content {
+  display: flex;
+  justify-content: center; /* توسيط أفقي */
+  align-items: center;     /* توسيط عمودي */
+  flex-direction: column;
+  min-height: 80vh;        /* يخلي المحتوى في وسط الصفحة */
+}
+
+table {
+  border-collapse: collapse;
+  width: 70%; /* حجم الجدول */
+  text-align: center;
+}
+th, td {
+  border: 1px solid #333;
+  padding: 10px;
+}
+th {
+  background-color: #f2f2f2;
+}
+footer {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f9f9f9;
+  color: #555;
+  font-size: 14px;
+}
+
+
+.table-container {
+  display: flex;
+  justify-content: center; /* وسط أفقي */
+  margin-top: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 60%;
+  text-align: center;
+  background-color: white;
+}
+
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+}
+
+th {
+  background-color: #ada6a6;
+}
+
+.btn_add {
+  background-color: rgb(8, 92, 22);
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn_edit {
+  background-color: rgb(86, 45, 199);
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.general1{
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* مسافة بين العناصر بدل margins */
+  margin-bottom:5px;
+}
+.general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 120px; /* مسافة بين العناصر بدل margins */
+  margin-bottom:5px;
+  margin-left:100px;
+}
+ p{
+margin-right: 150px;
+  margin-left: 200px;
+}
+.link {
+  text-decoration: none; /* حذف الخط السفلي */
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;    /* يخلي اللون مثل النص العادي أو حسب الستيل */
+}
+.link:hover {
+  color: blue;           /* لون مختلف عند المرور بالفأرة (اختياري) */
+  text-decoration: underline; /* أو تقدر تخليها ترجع فقط عند hover */
+}
+
+.link {
+  text-decoration: none;
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;
+}
+.link:hover {
+  color: blue;
+  text-decoration: underline;
+}
+.general1, .general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-bottom: 10px;
+}
+
+
+.link {
+  text-decoration: none;
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;
+}
+.link:hover {
+  color: blue;
+  text-decoration: underline;
+}
+.general1, .general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-bottom: 10px;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+}
+th {
+  background-color: #c4bcbc;
+}
+.general1, .general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  margin-bottom: 10px;
+}
+input[type="number"] {
+  width: 70px;
+  text-align: center;
+}
+.link {
+  text-decoration: none;
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;
+}
+.link:hover {
+  color: blue;
+  text-decoration: underline;
+}
+.btn{
+  background-color: rgb(23, 129, 50);
+  color: white;
+  font-weight: bold;
+}
+
+
+h1{
+  color: #1f1366;
+}
+h3 {
+  text-align:start;
+  margin-bottom: 20px;
+  color: #333;
+  margin-left: 10px;
+}
+.form-group {
+  margin-bottom: 15px;
+  text-align: right;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  
+}
+button {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover {
+  background: #45a049;
+}
+form {
+  margin-bottom: 15px;
+}
+.btn{
+ 
+  display: flex;
+  justify-content: center;
+}
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 300px; /* المسافة بين الزرين */
+  margin-top: 20px;
+}
+
+.btn-save {
+  background: #4CAF50;
+  color: white;
+}
+
+.btn-delete {
+  background: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+  
+.btn-save:hover {
+  background: #45a049;
+}
+
+.btn-delete:hover {
+  background: #e53935;
+}
+.link {
+  text-decoration: none; /* حذف الخط السفلي */
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;    /* يخلي اللون مثل النص العادي أو حسب الستيل */
+}
+.link:hover {
+  color: blue;           /* لون مختلف عند المرور بالفأرة (اختياري) */
+  text-decoration: underline; /* أو تقدر تخليها ترجع فقط عند hover */
+}
+.general1, .general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 70px; /* مسافة بين العناصر بدل margins */
+  margin-bottom: 10px;
+}
+
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tbl {
+  border-collapse: collapse;
+  width: 95%;
+  text-align: center;
+
+
+}
+th, td {
+  border: 1px solid #292727;
+  padding: 8px;
+}
+tr:nth-child(even) td {
+  background-color: #f9f9f9;
+}
+tr:nth-child(odd) td {
+  background-color: #ffffff;
+}
+
+th {
+  background-color: #c4bcbc;
+}
+.general1{
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 80px; /* مسافة بين العناصر بدل margins */
+  margin-bottom:5px;
+}
+.general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 140px; /* مسافة بين العناصر بدل margins */
+  margin-bottom:5px;
+  margin-left:100px;
+}
+ p{
+  margin-right: 150px;
+  margin-left:200px; 
+}
+.link {
+  text-decoration: none; /* حذف الخط السفلي */
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;    /* يخلي اللون مثل النص العادي أو حسب الستيل */
+}
+.link:hover {
+  color: blue;           /* لون مختلف عند المرور بالفأرة (اختياري) */
+  text-decoration: underline; /* أو تقدر تخليها ترجع فقط عند hover */
+}
+.statistics{
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  gap:0px;
+}
+
+tr th{
+        margin: 0;
+        background-color: rgb(160, 153, 153);
+      }
+ 
+.general1{
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 0px;
+  margin-bottom:5px;
+}
+.general2 {
+  font-weight: bold;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom:5px;
+  margin-left:70px;
+}
+
+table{
+  border-collapse: collapse;
+  text-align: center;
+  background-color: white;
+}
+ p{
+margin-right: 150px;
+  margin-left: 200px;
+   
+}
+.link {
+  text-decoration: none;
+  color: rgb(37, 101, 138);  
+  font-weight: bold;  
+  margin: 0 15px;
+}
+.link:hover {
+  color: blue;
+  text-decoration: underline;
+}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}إدارة التلاميذ{% endblock %}
+{% block content %}
+
+<div class="container">
+  <h2>إدارة التلاميذ</h2>
+  <div class="general1">
+    <p>📌 مديرية التربية لولاية: {{ general_info.directorate if general_info else '' }}</p>
+    <p>🏫 المؤسسة: {{ general_info.institution if general_info else '' }}</p>
+  </div>
+  <div class="general2">
+    <p>👨‍🏫 الأستاذ: {{ general_info.teacher if general_info else '' }}</p>
+    <p>📚 المادة: {{ general_info.subject if general_info else '' }}</p>
+  </div>
+  <hr>
+<center>
+  <form class="add-student" method="POST">
+    <div style="padding-top: 5px;width: 90%;display: contents;justify-content: center;">
+      <h4 style="width:30%;text-align: left;" >إضافة تلميذ:</h4>
+     <input style="width: 50%; margin-top: 10px;" type="text" name="fullname" placeholder="الإسم الكامل" required>
+    <select style="width: 20%;margin-top: 10px;" name="class_id" required>
+      {% for c in classes %}
+        <option value="{{ c.id }}">{{ c.name }}</option>
+      {% endfor %}
+    </select>
+    </div>
+    
+
+    <button style="width: 50%;font-weight: bold;font-size:medium;height: 40px; " type="submit">➕ إضافة</button>
+  </form> 
+
+  <hr>
+</center>
+  <!-- نموذج إضافة تلميذ يدوي -->
+
+
+  <!-- ✅ قسم الاستيراد والتصدير من إكسل -->
+<div style="margin: 20px 0; text-align: center;">
+  <h3>📂 استيراد/تصدير التلاميذ</h3>
+
+  <!-- استيراد -->
+ <form action="{{ url_for('import_excel') }}" method="post" enctype="multipart/form-data" style="display:inline-block; margin-right:10px; border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+    <h4>📥 استيراد من Excel</h4>
+    <input type="file" name="file" accept=".xlsx,.xls" required>
+    <div style="margin-top:10px;">
+      <label for="sheet_name">اختر الصفحة:</label>
+      <select name="sheet_name" id="sheet_name">
+          <option value="Sheet1">الصفحة 1</option>
+          <option value="Sheet2">الصفحة 2</option>
+          <option value="Sheet3">الصفحة 3</option>
+      </select>
+    </div>
+    <div style="margin-top:10px;">
+      <label for="start_row">بدء القراءة من السطر:</label>
+      <input type="number" name="start_row" id="start_row" value="9" min="1" style="width: 60px;">
+    </div>
+    <div style="margin-top:10px;">
+      <label for="class_id">اختر القسم:</label>
+      <select name="class_id" id="class_id">
+          {% for c in classes %}
+              <option value="{{ c.id }}">{{ c.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <button type="submit" style="margin-top:10px;">📥 استيراد</button>
+</form>
+
+
+</div>
+
+  <hr>
+
+  <!-- قسم الفلترة حسب الفصل -->
+  <div class="filter-section" style="margin-bottom: 20px; text-align: center;display:flex;justify-content: center;align-items: center;">
+    <label for="semester-filter" style="font-weight: bold; margin-left: 10px;">عرض التلاميذ للفصل:</label>
+    <select style="width: 20%;border-color: #25303b ;" id="semester-filter" onchange="window.location.href = '{{ url_for('students') }}?semester=' + this.value" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+      {% for semester_name in semesters %}
+      <option value="{{ semester_name }}" {% if semester_name == current_semester %}selected{% endif %}>
+        {{ semester_name }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- عنوان الفصل الحالي -->
+  <h3 style="text-align: right;margin-right: 40px; color: #34495e;">قائمة تلاميذ: {{ current_semester }}</h3>
+
+  <!-- جدول التلاميذ -->
+  <center>
+  <div class="tbl">
+    <table border="1" cellpadding="8" >
+      <tr>
+        <th> الإسم الكامل</th>
+        <th>القسم</th>
+        <th>العلامات</th>
+        <th>الإجراءات</th>
+      </tr>
+     
+      {% for s in students|sort(attribute='fullname') %}
+      <tr>
+        <td>{{ s.fullname }}</td>
+        <td>{{ s.class_rel.name }}</td>
+        <td>
+          <a class="add" href="{{ url_for('grades', student_id=s.id) }}">➕ إضافة علامات</a>
+        </td>
+        <td>
+          <a class="edit" href="{{ url_for('edit_student', student_id=s.id) }}">✏️ تعديل</a>
+          <a class="delete" href="{{ url_for('delete_student', id=s.id) }}"
+          onclick="return confirm('هل تريد حذف هذا التلميذ؟')">❌ حذف</a>
+
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  </center>
+</div>
+<style>
+  .container {
+  width: 98%;
+  background-color:#d8d8e2;
+  padding:10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px ;
+  text-align: center;
+  margin: auto;
+  margin-top: 0px;
+}
+.table-container{
+  width: 70%;
+  display: flex;
+  justify-content: center;  /* يوسط الجدول أفقيًا */
+  align-items: center;      /* يوسط الجدول عموديًا (إذا فيه ارتفاع كافي) */
+  margin-top: 10px;
+}
+.add, .edit, .delete{
+  font-weight: bold;
+  font-size: large;
+  margin: 10px;
+  padding: 3px 6px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+.add, .edit, .delete:hover{
+  font-weight: bold;
+  font-size: large;
+  margin: 10px;
+  padding: 3px 6px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.add{
+ color: rgb(25, 139, 73); 
+ background-color: rgb(202, 221, 206);
+}
+
+.edit{
+  color: blue;
+  background-color: rgb(164, 174, 185);
+}
+
+.delete{
+  color: red;
+  background-color: rgb(194, 177, 177);
+}
+.add-student{
+  margin-bottom:20px; 
+  width:70%;
+   display: flex;
+    justify-content: center;
+    gap: 20px;
+    height: 50px;  
+}
+.edit:hover {
+   color:white;
+  background-color:blue ;
+}
+.add:hover{
+  background-color: rgb(25, 139, 73);
+  color: white;
+}
+.delete:hover{
+  background-color: red;
+  color: white;
+}
+
+</style>
+{% endblock %}

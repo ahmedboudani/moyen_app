@@ -342,15 +342,26 @@ def import_excel():
             try:
                 # قراءة البيانات من العمود E (الفهرس 4) فما فوق
                 # تجاهل الأعمدة قبل E
-                lastname = str(row.get(4, "")).strip()  # العمود E
-                firstname = str(row.get(5, "")).strip()  # العمود F
-                
-                # تخطي الصفوف الفارغة
+                lastname_val = row.get(4)
+                firstname_val = row.get(5)
+
+                # التحقق من أن القيم ليست فارغة أو NaN قبل تحويلها إلى نص
+                if pd.isna(lastname_val) or pd.isna(firstname_val):
+                    continue
+
+                lastname = str(lastname_val).strip()
+                firstname = str(firstname_val).strip()
+
+                # تخطي الصفوف الفارغة بعد التنظيف
                 if not lastname or not firstname:
                     continue
                     
                 # دمج الاسم واللقب لتكوين الاسم الكامل
                 fullname = f"{lastname} {firstname}"
+                
+                # التأكد من عدم إضافة "nan nan"
+                if fullname.lower() == "nan nan":
+                    continue
                 
                 # إضافة الطالب لكل فصل دراسي
                 for sem in ALL_SEMESTERS:

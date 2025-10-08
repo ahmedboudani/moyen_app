@@ -78,12 +78,32 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('classes'))
-        except Exception as e:
-            print(f"Error during login: {e}")
-            flash("An internal error occurred. Please try again later.", "error")
-            return redirect(url_for('login'))
-    return render_template('login.html')
 
+    if request.method == 'POST':
+        try:
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.filter_by(username=username).first()
+
+            if user and user.check_password(password):
+                # 💡 Assuming 'user.check_password(password)' uses check_password_hash internally,
+                # as 'check_password_hash' is imported but 'user.set_password' is used in /register.
+                login_user(user)
+                # Redirect to the page the user tried to access, or 'classes' as default
+                next_page = request.args.get('next')
+                return redirect(next_page or url_for('classes'))
+            else:
+                flash('Invalid username or password', 'error')
+                return redirect(url_for('login'))
+
+        except Exception as e:
+            # Handle unexpected errors during the POST request
+            print(f"Error during login: {e}")
+            flash("An internal error occurred during login. Please try again later.", "error")
+            return redirect(url_for('login'))
+            
+    # Handle GET request (or fallthrough from unsuccessful POST)
+    return render_template('login.html')
 @app.route('/logout')
 def logout():
     logout_user()

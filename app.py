@@ -335,11 +335,12 @@ def import_excel():
             try:
                 # قراءة البيانات من العمود E (الفهرس 4) فما فوق
                 # تجاهل الأعمدة قبل E
-                lastname = str(row.get(4, "")).strip()  # العمود E
-                firstname = str(row.get(5, "")).strip()  # العمود F
-                
-                # تخطي الصفوف الفارغة
-                if not lastname or not firstname:
+                # قراءة الاسم واللقب من الأعمدة B و C
+                lastname = str(row.get(1, "")).strip()  # العمود B
+                firstname = str(row.get(2, "")).strip() # العمود C
+
+                # التحقق من أن القيم ليست 'nan' وتخطي الصفوف الفارغة
+                if not lastname or lastname.lower() == 'nan' or not firstname or firstname.lower() == 'nan':
                     continue
                     
                 # دمج الاسم واللقب لتكوين الاسم الكامل

@@ -69,6 +69,7 @@ def register():
             return redirect(url_for('login'))
         except Exception as e:
             db.session.rollback()
+            print(f"Error during registration: {e}")
             flash(f"An error occurred during registration: {e}", "error")
             return redirect(url_for('register'))
     return render_template('register.html')
@@ -77,15 +78,10 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('classes'))
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user is None or not user.check_password(password):
-            flash('Invalid username or password')
+        except Exception as e:
+            print(f"Error during login: {e}")
+            flash("An internal error occurred. Please try again later.", "error")
             return redirect(url_for('login'))
-        login_user(user, remember=True)
-        return redirect(url_for('classes'))
     return render_template('login.html')
 
 @app.route('/logout')

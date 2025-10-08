@@ -76,33 +76,39 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # 1. إذا كان المستخدم مسجلاً بالفعل، أعد توجيهه إلى صفحة الأقسام
     if current_user.is_authenticated:
         return redirect(url_for('classes'))
 
+    # 2. معالجة طلب POST (محاولة تسجيل الدخول)
     if request.method == 'POST':
         try:
-            username = request.form['username']
-            password = request.form['password']
+            username = request.form.get('username')
+            password = request.form.get('password')
+            
+            # البحث عن المستخدم
             user = User.query.filter_by(username=username).first()
 
+            # التحقق من وجود المستخدم وصحة كلمة المرور
             if user and user.check_password(password):
-                # 💡 Assuming 'user.check_password(password)' uses check_password_hash internally,
-                # as 'check_password_hash' is imported but 'user.set_password' is used in /register.
                 login_user(user)
-                # Redirect to the page the user tried to access, or 'classes' as default
+                
+                # التوجيه إلى الصفحة المطلوبة أو إلى صفحة الأقسام الافتراضية
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('classes'))
             else:
-                flash('Invalid username or password', 'error')
-                return redirect(url_for('login'))
+                # رسالة خطأ عند فشل تسجيل الدخول
+                flash('اسم المستخدم أو كلمة المرور غير صحيحة.', 'error')
+                # ابقَ على صفحة تسجيل الدخول لتمكين المستخدم من المحاولة مرة أخرى
+                return render_template('login.html')
 
         except Exception as e:
-            # Handle unexpected errors during the POST request
-            print(f"Error during login: {e}")
-            flash("An internal error occurred during login. Please try again later.", "error")
+            # التعامل مع الأخطاء غير المتوقعة أثناء عملية تسجيل الدخول
+            print(f"Error during login POST: {e}")
+            flash("حدث خطأ داخلي أثناء محاولة تسجيل الدخول. يرجى المحاولة مرة أخرى.", "error")
             return redirect(url_for('login'))
             
-    # Handle GET request (or fallthrough from unsuccessful POST)
+    # 3. معالجة طلب GET (عرض نموذج تسجيل الدخول)
     return render_template('login.html')
 @app.route('/logout')
 def logout():

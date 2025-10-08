@@ -9,13 +9,6 @@ import openpyxl
 from openpyxl import load_workbook # ✨ المكتبة الجديدة         # ✨ للتعامل مع الملف في الذا
 import io
 from openpyxl.utils import coordinate_to_tuple
-import logging
-import tempfile
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-# داخسم معالجة الأخطاء
-
 app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = "tu_clave_secreta_aqui"  # Agrega esta línea
@@ -342,26 +335,15 @@ def import_excel():
             try:
                 # قراءة البيانات من العمود E (الفهرس 4) فما فوق
                 # تجاهل الأعمدة قبل E
-                lastname_val = row.get(4)
-                firstname_val = row.get(5)
-
-                # التحقق من أن القيم ليست فارغة أو NaN قبل تحويلها إلى نص
-                if pd.isna(lastname_val) or pd.isna(firstname_val):
-                    continue
-
-                lastname = str(lastname_val).strip()
-                firstname = str(firstname_val).strip()
-
-                # تخطي الصفوف الفارغة بعد التنظيف
+                lastname = str(row.get(4, "")).strip()  # العمود E
+                firstname = str(row.get(5, "")).strip()  # العمود F
+                
+                # تخطي الصفوف الفارغة
                 if not lastname or not firstname:
                     continue
                     
                 # دمج الاسم واللقب لتكوين الاسم الكامل
                 fullname = f"{lastname} {firstname}"
-                
-                # التأكد من عدم إضافة "nan nan"
-                if fullname.lower() == "nan nan":
-                    continue
                 
                 # إضافة الطالب لكل فصل دراسي
                 for sem in ALL_SEMESTERS:
@@ -494,7 +476,4 @@ def export_excel():
 
 
 if __name__ == "__main__":
-    from waitress import serve
-    import os
-    port = int(os.environ.get("PORT", 8080))
-    serve(app, host="0.0.0.0", port=port)
+    app.run(debug=True)

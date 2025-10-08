@@ -9,6 +9,13 @@ import openpyxl
 from openpyxl import load_workbook # ✨ المكتبة الجديدة         # ✨ للتعامل مع الملف في الذا
 import io
 from openpyxl.utils import coordinate_to_tuple
+import logging
+import tempfile
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+# داخسم معالجة الأخطاء
+
 app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = "tu_clave_secreta_aqui"  # Agrega esta línea

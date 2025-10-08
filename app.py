@@ -242,8 +242,6 @@ def grades(student_id):
 @login_required
 def edit_grade(grade_id):
     grade = Grade.query.get_or_404(grade_id)
-    if grade.user_id != current_user.id:
-        return redirect(url_for('students'))
     student = grade.student
     if student.user_id != current_user.id:
         return redirect(url_for('students'))

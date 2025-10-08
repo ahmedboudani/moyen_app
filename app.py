@@ -12,6 +12,10 @@ from openpyxl import load_workbook # ✨ المكتبة الجديدة         #
 import io
 from openpyxl.utils import coordinate_to_tuple
 
+# Ensure the instance folder exists
+instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+os.makedirs(instance_path, exist_ok=True)
+
 app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = "tu_clave_secreta_aqui"

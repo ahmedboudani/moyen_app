@@ -7,3 +7,6 @@ waitress
 psycopg2-binary
 pandas
 openpyxl
+Flask-Login
+Werkzeug
+email-validator

@@ -1,0 +1,28 @@
+{
+  "name": "نظام إدارة التلاميذ",
+  "description": "تطبيق ويب لإدارة بيانات التلاميذ وعلاماتهم في المؤسسات التعليمية",
+  "keywords": ["education", "flask", "student-management"],
+  "website": "https://github.com/username/moyyen",
+  "repository": "https://github.com/username/moyyen",
+  "success_url": "/",
+  "env": {
+    "FLASK_ENV": {
+      "description": "The environment to run Flask in.",
+      "value": "production"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

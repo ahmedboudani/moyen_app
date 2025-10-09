@@ -18,7 +18,7 @@ os.makedirs(instance_path, exist_ok=True)
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.secret_key = "tu_clave_secreta_aqui"
+app.secret_key = os.environ.get('SECRET_KEY', "tu_clave_secreta_aqui")
 db.init_app(app)
 
 login_manager = LoginManager()
@@ -45,6 +45,7 @@ def inject_general_info():
         return dict(general_info=info)
     return dict(general_info=None)
 
+# إنشاء جداول قاعدة البيانات
 with app.app_context():
     db.create_all()
 

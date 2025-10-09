@@ -10,3 +10,5 @@ openpyxl
 Flask-Login
 Werkzeug
 email-validator
+supabase==0.7.0
+python-dotenv==0.19.2

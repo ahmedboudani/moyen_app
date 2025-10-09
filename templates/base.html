@@ -20,10 +20,20 @@
   <div class="content">
     {% block content %}{% endblock %}
   </div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
   <footer>
     <p>جميع الحقوق محفوظة © {{ general_info.institution if general_info else '' }}</p>
   </footer>
+
 </body>
 <style>
   nav{

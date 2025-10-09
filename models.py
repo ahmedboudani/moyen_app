@@ -64,6 +64,7 @@ class Grade(db.Model):
     assessment = db.Column(db.Float, nullable=False, default=0.0)  # التقويم
     test = db.Column(db.Float, nullable=False, default=0.0)        # الفرض
     exam = db.Column(db.Float, nullable=False, default=0.0)        # الاختبار
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
     
     # *** التعديل 2: إضافة عمود الفصل الدراسي لجدول العلامات (ضروري) ***

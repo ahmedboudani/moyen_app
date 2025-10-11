@@ -11,7 +11,9 @@ instance/
 # Report PDF
 report.pdf
 
+
 # Environment
 .env
 venv/
 ENV/
+config.py

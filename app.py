@@ -17,7 +17,7 @@ instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instan
 os.makedirs(instance_path, exist_ok=True)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///instance/test.db')
+print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 

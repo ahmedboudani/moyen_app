@@ -1,5 +1,5 @@
 from models import db, Class, Student, Grade, GeneralInfo, User
-from config import Config
+import os
 from export_pdf import export_to_pdf
 import pandas as pd
 from werkzeug.utils import secure_filename
@@ -17,7 +17,8 @@ instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instan
 os.makedirs(instance_path, exist_ok=True)
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///instance/test.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 

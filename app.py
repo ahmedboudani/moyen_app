@@ -26,8 +26,7 @@ db.init_app(app)
 if app.config['SQLALCHEMY_DATABASE_URI'] and app.config['SQLALCHEMY_DATABASE_URI'].startswith('postgres://'):
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://', 1)
 
-app.secret_key = os.environ.get('SECRET_KEY', "tu_clave_secreta_aqui")
-db.init_app(app)
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)

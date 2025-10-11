@@ -2,36 +2,24 @@ from models import db, Class, Student, Grade, GeneralInfo, User
 from config import Config
 from export_pdf import export_to_pdf
 import pandas as pd
-import os
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_file, jsonify,flash , redirect,url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
-import openpyxl
 from openpyxl import load_workbook # ✨ المكتبة الجديدة         # ✨ للتعامل مع الملف في الذا
 import io
 from openpyxl.utils import coordinate_to_tuple
-
-from models import db, Class, Student, Grade, GeneralInfo, User
-from config import Config
-from export_pdf import export_to_pdf
-import pandas as pd
 import os
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, request, send_file, jsonify, flash, redirect, url_for
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.security import check_password_hash
 import openpyxl
-from openpyxl import load_workbook
-import io
-from openpyxl.utils import coordinate_to_tuple
-
 # Ensure the instance folder exists
 instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
 os.makedirs(instance_path, exist_ok=True)
 
 app = Flask(__name__)
 app.config.from_object(Config)
+db.init_app(app)
+
 
 # تعديل رابط قاعدة البيانات إذا كان من Render
 if app.config['SQLALCHEMY_DATABASE_URI'] and app.config['SQLALCHEMY_DATABASE_URI'].startswith('postgres://'):
